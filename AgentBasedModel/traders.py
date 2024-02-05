@@ -780,3 +780,4 @@ class MarketMaker2D(MultiTrader):
                 base_offset = -((spread['ask'] - spread['bid']) * (self.assets / self.softlimit))  # Price offset
                 self._buy_limit(idx, bid_volume, spread['bid'] - base_offset - .1)                 # BID
                 self._sell_limit(idx, ask_volume, spread['ask'] + base_offset + .1)                # ASK
+
