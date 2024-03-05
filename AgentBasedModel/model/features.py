@@ -36,10 +36,10 @@ class BidAskVolumeImbalance():
     
     def compile_feature(self):
         self.bid_ask_volume_imbalance = {idx: list() for idx in range(len(self.exchanges))}
-        for exchange in range(len(self.exchanges)):
+        for exchange in self.exchanges.keys():
             for tick in range(len(self.orderbook_history[exchange])):
-                bid_qty = self.orderbook_history[exchange][tick]['bid'][0]['qty']
-                ask_qty = self.orderbook_history[exchange][tick]['ask'][0]['qty']
+                bid_qty = self.orderbook_history[exchange][tick]['bid'][list(self.exchanges.keys())[0]]['qty']
+                ask_qty = self.orderbook_history[exchange][tick]['ask'][list(self.exchanges.keys())[0]]['qty']
                 self.bid_ask_volume_imbalance[exchange].append(round((bid_qty - ask_qty) / (bid_qty + ask_qty), 2))
         return self.bid_ask_volume_imbalance
 
