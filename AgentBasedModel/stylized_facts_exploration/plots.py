@@ -43,7 +43,7 @@ def plot_raw_returns_autocorrelation(info):
     plt.show()
 
 def plot_absolute_returns_autocorrelation(info):
-    acf_values, lags, lower_bound, upper_bound = extract_info_for_time_series_acf(np.square(get_returns(get_prices(info))))
+    acf_values, lags, lower_bound, upper_bound = extract_info_for_time_series_acf(np.abs(get_returns(get_prices(info))))
     plt.figure(figsize=(10, 6))
     plt.bar(lags[1:], acf_values[1:], width=0.2, align='center', label='ACF')
     plt.fill_between(lags[1:], lower_bound, upper_bound, color='grey', alpha=0.2, label='95% Confidence Interval')
@@ -51,7 +51,7 @@ def plot_absolute_returns_autocorrelation(info):
     plt.plot(lags[1:], lower_bound, color='grey')
 
     plt.axhline(y=0, color='black', linewidth=0.8, linestyle='dotted')
-    plt.title('ACF of absolute (squared) returns')
+    plt.title('ACF of absolute returns')
     plt.xlabel('Lag')
     plt.ylabel('ACF')
     plt.legend()
@@ -118,6 +118,27 @@ def plot_raw_returns_volatility_correlation(info):
     plt.ylabel('Volatility')
     plt.legend()
     plt.show()
+
+
+def plot_function_of_returns_autosorrelation(info):
+    func_name = ['square', 'exp', 'cos', 'arctan']
+    fig, axs = plt.subplots(2, 2, figsize=(14, 10))
+    for i, func in enumerate([np.square, np.exp, np.cos, np.arctan]):
+        acf_values, lags, lower_bound, upper_bound = extract_info_for_time_series_acf(func(get_returns(get_prices(info))))
+        
+        axs[i // 2, i % 2].bar(lags[1:], acf_values[1:], width=0.2, align='center', label='ACF')
+        axs[i // 2, i % 2].fill_between(lags[1:], lower_bound, upper_bound, color='grey', alpha=0.2, label='95% Confidence Interval')
+        axs[i // 2, i % 2].plot(lags[1:], upper_bound, color='grey')
+        axs[i // 2, i % 2].plot(lags[1:], lower_bound, color='grey')
+
+        axs[i // 2, i % 2].axhline(y=0, color='black', linewidth=0.8, linestyle='dotted')
+        axs[i // 2, i % 2].set_title(f'ACF of {func_name[i]} returns')
+        axs[i // 2, i % 2].set_xlabel('Lag')
+        axs[i // 2, i % 2].set_ylabel('ACF')
+        axs[i // 2, i % 2].legend()
+        axs[i // 2, i % 2].grid(True)
+    
+plt.show()
 
 def plot_leverage_effect(infos):
     infos_corrcoef_list = []

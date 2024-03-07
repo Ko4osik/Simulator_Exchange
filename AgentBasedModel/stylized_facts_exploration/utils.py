@@ -22,7 +22,7 @@ def get_log_returns(prices):
 
 def kurtosis_rolling(info, window):
     returns = get_returns(get_prices(info))
-    return pd.Series(returns).rolling(window = window).apply(lambda x: sts.kurtosis(x))
+    return pd.Series(returns).rolling(window = window).apply(lambda x: sts.kurtosis(x) + 3)
 
 def trades_volume(info):
     trades_history = info.trades_history[list(info.exchanges.keys())[0]]
@@ -71,7 +71,7 @@ def ADF_test(times_series):
 
 def kurtosis_of_returns(info):
     returns = get_returns(pd.Series(info.prices[list(info.exchanges.keys())[0]]))
-    print(f"Kurtosis:", sts.kurtosis(returns))
+    print(f"Kurtosis:", sts.kurtosis(returns) + 3)
 
 def opt_func(t, A, b):
     return A / np.power(t, b)
@@ -84,3 +84,4 @@ def abs_returns_corr_coeffs(info):
     popt, _ = curve_fit(opt_func, t, acf_values)
     A, b = popt
     return A, b
+
